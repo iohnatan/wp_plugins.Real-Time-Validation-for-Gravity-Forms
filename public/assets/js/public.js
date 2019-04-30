@@ -60,10 +60,11 @@
 
     jQuery(document).bind('gform_post_conditional_logic', function(a, b, c, d) {
 
-        if ( typeof all_validations !== "undefined" && typeof window.lv_formIDs !== "undefined" &&  window.lv_formIDs.length > 0) {
+        if ( typeof all_validations !== "undefined" && 
+            typeof window.lv_formIDs !== "undefined" &&
+            window.lv_formIDs.length > 0
+        ) {
             for (var key in all_validations[b]) {
-
-
 
                 if (jQuery("#field_" + b + "_" + key).length > 0 && (!jQuery("#input_" + b + "_" + key).is(":visible") && (jQuery("#gform_wrapper_" + b).is(":visible")))) {
 
@@ -76,8 +77,9 @@
                         handle_conditional_logic = true;
 
                     } else {
-
-                        all_validations[b][key].disable();
+                        var $element = jQuery( all_validations[b][key].element );
+                        if ( ! $element.data("chosen") ) // is chosen initialized, the disabled attribute makes the field not validated
+                            all_validations[b][key].disable();
 
                         handle_conditional_logic = true;
                     }

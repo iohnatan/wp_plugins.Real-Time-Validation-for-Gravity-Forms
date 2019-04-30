@@ -362,7 +362,13 @@ if (!class_exists('Gravity_Forms_Live_Validation')) {
              * Checking suitable condition to apply validations, they can vary when we have support for more fields
              * it includes, Validation settings on/off , chekcing is ajax, checking if paging , checking if error,
              */
-            if (!$this->is_enable_validations($form) || $this->is_submission || ($this->has_ajax && $this->is_paging) || ($this->has_ajax && (!is_null($this->submission) && $this->submission['is_valid'] == false)) || ( rgar($this->submission, 'saved_for_later') == true )) {
+            /* js 30-14-2019, check property is_valid is set (fix for gf flow step) */
+            if ( ! $this->is_enable_validations($form) || 
+                $this->is_submission ||
+                ($this->has_ajax && $this->is_paging) || 
+                ($this->has_ajax && ( ! is_null( $this->submission ) && rgar($this->submission, 'is_valid') === false) ) || 
+                ( rgar($this->submission, 'saved_for_later') == true )
+            ) {
                 return $form;
             }
             $max_count = max(wp_list_pluck($form['fields'], 'pageNumber'));

@@ -268,10 +268,7 @@ LiveValidation.prototype = {
 
                 case LiveValidation.SELECT:
 
-
                     this.element.onblur = function(e) {
-
-
                         if (hasSubFields.indexOf(self.fieldType) == -1) {
 
                             return  self.doOnBlur(e);
@@ -303,6 +300,7 @@ LiveValidation.prototype = {
 
 
                     }
+
                     break;
                 case LiveValidation.FILE:
                     this.element.onchange = function(e) {
@@ -563,7 +561,16 @@ LiveValidation.prototype = {
 
         if (!this.checkIfDisable(this.element)) {
             this.beforeValidation();
-            var isValid = this.doValidations();
+
+            var elemLi = jQuery(this.element).parents("li.gfield");
+            if ( ( elemLi.length > 0 && 
+                jQuery( elemLi[0] ).hasClass( "gfield_visibility_hidden" ) )
+            ) {
+                var isValid = true;
+            } else {
+                var isValid = this.doValidations();
+            }
+
             if (isValid) {
                 this.beforeValid();
                 this.onValid();
@@ -766,9 +773,9 @@ LiveValidationForm.prototype = {
         this.name = element.id;
         this.element = element;
         this.fields = [];
+        
         // preserve the old onsubmit event
-        this.oldOnSubmit = this.element.onsubmit || function() {
-        };
+        this.oldOnSubmit = this.element.onsubmit || function() {};
         var self = this;
 
         this.element.setAttribute("onsubmit", "return false;");
@@ -776,8 +783,6 @@ LiveValidationForm.prototype = {
 
 
         this.element.onsubmit = function(e) {
-
-
 
             var moveTo = 0;
             var elem_form = e.currentTarget;
@@ -802,6 +807,7 @@ LiveValidationForm.prototype = {
                     self.valid = LiveValidation.massValidate(self.fields);
             self.valid ? self.onValid() : self.onInvalid();
             self.afterValidation();
+
 
             if (self.valid)
                 ret = self.oldOnSubmit.call(this, e || window.event) !== false;
@@ -911,7 +917,8 @@ LiveValidationForm.prototype = {
                             if (label_text1 == "" || label_text1 == "*") {
 
                                 label_elem = document.querySelector("#" + ID + "_container label[for='" + ID + "']");
-                                var label_text1 = (label_elem.textContent || label_elem.innerText);
+                                // js 30-04-2019, check label_elem exist for required fields
+                                var label_text1 = label_elem ? (label_elem.textContent || label_elem.innerText) : '';
 
                             }
 
@@ -1423,11 +1430,7 @@ var Validate = {
        
         var paramsObj = paramsObj || {};
         var message = paramsObj.failureMessage || "Must be accepted!";
- console.log('runs');
         var ParentValue = document.getElementById(paramsObj.parentField).value;
-                console.log(value);
-                console.log(ParentValue);
-
 
         if (value !== ParentValue) {
             Validate.fail(message);

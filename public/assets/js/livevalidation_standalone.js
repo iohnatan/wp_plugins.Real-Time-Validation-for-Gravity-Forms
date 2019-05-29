@@ -562,9 +562,12 @@ LiveValidation.prototype = {
         if (!this.checkIfDisable(this.element)) {
             this.beforeValidation();
 
-            var elemLi = jQuery(this.element).parents("li.gfield");
-            if ( ( elemLi.length > 0 && 
-                jQuery( elemLi[0] ).hasClass( "gfield_visibility_hidden" ) )
+            // doesn't valite hidden gfield
+            var fieldParentsLi  = jQuery( this.element ).parents( "li.gfield" );
+            var liField = fieldParentsLi.length > 0 ? fieldParentsLi.first() : null;
+            if ( ( liField && 
+                ( liField.hasClass( "gfield_visibility_hidden" ) ||
+                liField.is(":hidden")  ) )
             ) {
                 var isValid = true;
             } else {

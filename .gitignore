@@ -4,3 +4,5 @@
 phpunit.xml.dist
 /bin/
 /.idea/
+desktop.ini
+real-time-validation-for-gravity-forms.code-workspace

@@ -44,8 +44,8 @@ class lv_formlist_option {
         }
 
         wp_localize_script("jquery", 'lv_formlist', $array);
-        wp_localize_script("jquery", 'lv_ajax_toggle_nonce', wp_create_nonce('gf_lv_ajax_toggle'));
-        wp_localize_script("jquery", 'lv_toggle_url', admin_url('admin.php?page=gf_edit_forms'));
+        wp_localize_script("jquery", 'lv_ajax_toggle_nonce', array( wp_create_nonce('gf_lv_ajax_toggle') ) );
+        wp_localize_script("jquery", 'lv_toggle_url', array( admin_url('admin.php?page=gf_edit_forms') ) );
     }
     
    
